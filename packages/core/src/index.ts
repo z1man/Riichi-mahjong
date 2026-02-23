@@ -1,2 +1,4 @@
-// Core engine placeholder (Phase A)
-export type { Action, Event, Ruleset, Snapshot, Seat } from "@riichi/protocol";
+export * from "./types";
+export * from "./rng";
+export * from "./tiles";
+export * from "./game";
