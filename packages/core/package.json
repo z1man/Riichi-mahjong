@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "tsx test/basic.test.ts"
+    "test": "tsx test/basic.test.ts && tsx test/turns.test.ts"
   },
   "dependencies": {
     "@riichi/protocol": "workspace:*"
