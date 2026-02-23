@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Riichi MVP</title>
+    <style>
+      body { font-family: sans-serif; padding: 16px; }
+      .hand { display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0; }
+      .tile { padding: 4px 6px; border: 1px solid #ccc; cursor: pointer; }
+      .seat { margin-top: 12px; }
+      .kawa { font-size: 12px; color: #444; }
+      button { margin-right: 8px; }
+    </style>
+  </head>
+  <body>
+    <h1>Riichi MVP (Phase A)</h1>
+    <div id="status">connecting...</div>
+    <div id="self"></div>
+    <div id="others"></div>
+
+    <script>
+      const ws = new WebSocket(`ws://${location.host}`);
+      let seat = null;
+      let snapshot = null;
+
+      function tileName(t){
+        if (t <= 8) return `${t+1}m`;
+        if (t <= 17) return `${t-8}p`;
+        if (t <= 26) return `${t-17}s`;
+        if (t <= 30) return ['E','S','W','N'][t-27];
+        return ['P','F','C'][t-31];
+      }
+
+      function render(){
+        if (!snapshot) return;
+        document.getElementById('status').textContent = `Seat ${seat} | Turn ${snapshot.turnSeat}`;
+        const self = document.getElementById('self');
+        const hand = snapshot.hands[seat];
+        const legal = snapshot.legalActions || [];
+        self.innerHTML = '<h3>Your Hand</h3>';
+        const handDiv = document.createElement('div');
+        handDiv.className = 'hand';
+        if (hand) {
+          hand.forEach((cnt, idx)=>{
+            for(let i=0;i<cnt;i++){
+              const btn = document.createElement('div');
+              btn.className='tile';
+              btn.textContent = tileName(idx);
+              const canDiscard = legal.some(a=>a.type==='DISCARD' && a.tile34===idx);
+              btn.style.opacity = canDiscard ? '1' : '0.3';
+              if (canDiscard){
+                btn.onclick = ()=>{
+                  ws.send(JSON.stringify({type:'ACTION', action:{type:'DISCARD', gameId:'game', playerId:'p'+(seat+1), tile34: idx}}));
+                };
+              }
+              handDiv.appendChild(btn);
+            }
+          });
+        }
+        self.appendChild(handDiv);
+
+        const others = document.getElementById('others');
+        others.innerHTML = '<h3>Discards</h3>';
+        snapshot.discards.forEach((kawa, s)=>{
+          const div = document.createElement('div');
+          div.className='seat';
+          div.innerHTML = `<b>Seat ${s}</b> <span class="kawa">${kawa.map(tileName).join(' ')}</span>`;
+          others.appendChild(div);
+        });
+      }
+
+      ws.onmessage = (ev)=>{
+        const msg = JSON.parse(ev.data);
+        if (msg.type==='WELCOME'){ seat = msg.seat; }
+        if (msg.type==='SNAPSHOT'){ snapshot = msg.snapshot; render(); }
+      };
+    </script>
+  </body>
+</html>
