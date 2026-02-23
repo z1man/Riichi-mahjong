@@ -8,6 +8,11 @@
     "declarationMap": true,
     "sourceMap": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@riichi/core": ["packages/core/src"],
+      "@riichi/protocol": ["packages/protocol/src"]
+    }
   }
 }
