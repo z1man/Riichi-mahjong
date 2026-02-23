@@ -1,0 +1,11 @@
+{
+  "name": "@riichi/web",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "build": "echo \"todo web build\""
+  },
+  "dependencies": {
+    "@riichi/core": "workspace:*"
+  }
+}

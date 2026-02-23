@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ruleset.schema.json",
+  "title": "Ruleset",
+  "type": "object",
+  "properties": {
+    "startingScores": { "type": "integer" },
+    "allowOpenTanyao": { "type": "boolean" },
+    "akaDora": { "type": "boolean" }
+  },
+  "additionalProperties": true
+}

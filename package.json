@@ -1,0 +1,11 @@
+{
+  "name": "riichi-mahjong",
+  "private": true,
+  "version": "0.0.1",
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "lint": "echo \"(todo) lint\"",
+    "test": "echo \"(todo) test\"",
+    "build": "pnpm -r build"
+  }
+}

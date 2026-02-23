@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "action.schema.json",
+  "title": "Action",
+  "type": "object",
+  "required": ["type", "gameId", "playerId"],
+  "properties": {
+    "type": { "enum": ["DISCARD", "TSUMO", "RON", "PASS"] },
+    "gameId": { "type": "string" },
+    "playerId": { "type": "string" },
+    "seq": { "type": "number" },
+    "tile34": { "type": "integer", "minimum": 0, "maximum": 33 },
+    "declareRiichi": { "type": "boolean" }
+  },
+  "additionalProperties": false
+}
